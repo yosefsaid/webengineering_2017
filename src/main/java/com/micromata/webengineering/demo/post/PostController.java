@@ -1,13 +1,24 @@
 package com.micromata.webengineering.demo.post;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.micromata.webengineering.demo.util.AddressService;
 
 /**
  * HTTP endpoint for a post-related HTTP requests.
  */
 @RestController
 public class PostController {
+	private static class PostCreated {
+		public String url;
+	}
+
+	@Autowired
+	private AddressService addressService;
+	
     @Autowired
     private PostService postService;
 
@@ -17,8 +28,12 @@ public class PostController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public void addPost(@RequestBody Post post) {
+    public PostCreated addPost(@RequestBody Post post) {
         postService.addPost(post);
+        
+        PostCreated postCreated = new PostCreated();
+        postCreated.url = "http://" + addressService.getHostName() + ":" + addressService.getPort() + "/post/" + post.getId();
+        return postCreated;
     }
 
     @RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
