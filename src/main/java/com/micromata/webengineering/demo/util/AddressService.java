@@ -41,6 +41,15 @@ public class AddressService implements ApplicationListener<EmbeddedServletContai
 	public int getPort(){
 		return port;
 	}
+	
+	/*
+	 * Return the server URL with http:// prefix.
+	 * 
+	 * @return server URL.
+	 */
+	public String getServerURL() {
+		return "http://" + getHostName() + ":" + getPort();
+	}
 
 	/*
 	 * This method is called when a particular event (noted in the interface) is executed. 
